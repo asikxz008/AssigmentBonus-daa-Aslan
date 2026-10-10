@@ -1,0 +1,19 @@
+name: Java correctness and recorded results
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Compile
+        run: javac --release 17 -d out *.java
+      - name: Test data structures
+        run: java -cp out StructureTests
+      - name: Verify recorded results and README
+        run: java -cp out ReportGenerator --check
